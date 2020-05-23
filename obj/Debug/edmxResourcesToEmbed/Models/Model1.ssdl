@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Computer_Management_SystemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Account">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Password" Type="nvarchar" MaxLength="50" />
+    <Property Name="Email" Type="varchar" MaxLength="50" />
+    <Property Name="NgaySinh" Type="date" />
+    <Property Name="Mobile" Type="nvarchar" MaxLength="50" />
+    <Property Name="Role" Type="int" />
+    <Property Name="City" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Products">
+    <Key>
+      <PropertyRef Name="Product ID" />
+    </Key>
+    <Property Name="Product ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Product Name" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Made in" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Brand" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Quantity" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Warranty Period" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Price" Type="float" Nullable="false" />
+    <Property Name="Image1" Type="varchar(max)" />
+    <Property Name="Image2" Type="varchar(max)" />
+    <Property Name="Image3" Type="varchar(max)" />
+    <Property Name="Description" Type="varchar(max)" Nullable="false" />
+  </EntityType>
+  <EntityType Name="User_Report">
+    <Key>
+      <PropertyRef Name="ReportID" />
+    </Key>
+    <Property Name="ReportID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UserID" Type="int" />
+    <Property Name="Description" Type="nvarchar" MaxLength="100" />
+    <Property Name="Date" Type="datetime" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'Computer_Management_System.dbo.UserReport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="UserReport">
+    <Key>
+      <PropertyRef Name="UserID" />
+      <PropertyRef Name="ReportID" />
+    </Key>
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Email" Type="varchar" MaxLength="50" />
+    <Property Name="Date" Type="datetime" />
+    <Property Name="Description" Type="nvarchar" MaxLength="100" />
+    <Property Name="ReportID" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_User_Report_Account">
+    <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
+    <End Role="User_Report" Type="Self.User_Report" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Account">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="User_Report">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Computer_Management_SystemModelStoreContainer">
+    <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="User_Report" EntityType="Self.User_Report" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="UserReport" EntityType="Self.UserReport" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [UserReport].[UserID] AS [UserID], 
+    [UserReport].[UserName] AS [UserName], 
+    [UserReport].[Email] AS [Email], 
+    [UserReport].[Date] AS [Date], 
+    [UserReport].[Description] AS [Description], 
+    [UserReport].[ReportID] AS [ReportID]
+    FROM [dbo].[UserReport] AS [UserReport]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_User_Report_Account" Association="Self.FK_User_Report_Account">
+      <End Role="Account" EntitySet="Account" />
+      <End Role="User_Report" EntitySet="User_Report" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
