@@ -26,8 +26,13 @@ namespace Computer_Shop.Models
         }
     
         public virtual DbSet<Account> Accounts { get; set; }
+        public virtual DbSet<Customer> Customers { get; set; }
+        public virtual DbSet<Employee> Employees { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OriginalOrder> OriginalOrders { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<User_Report> User_Report { get; set; }
-        public virtual DbSet<UserReport> UserReports { get; set; }
+        public virtual DbSet<AccountCustomerEmployeeOrder> AccountCustomerEmployeeOrders { get; set; }
+        public virtual DbSet<AccountEmployee> AccountEmployees { get; set; }
     }
 }

@@ -23,7 +23,8 @@ namespace Computer_Shop.Models
         public string Quantity { get; set; }
         public string Warranty_Period { get; set; }
         public double Price { get; set; }
-        [DisplayName ("Upload Image")]
+
+        [DisplayName("Image")]
         public string Image1 { get; set; }
         public HttpPostedFileBase ImageFile1 { get; set; }
         public string Image2 { get; set; }

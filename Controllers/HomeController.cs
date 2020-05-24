@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
 using Computer_Shop.Models;
+using Microsoft.Ajax.Utilities;
+
 namespace Computer_Shop.Controllers
 {
     public class HomeController : Controller
@@ -76,7 +80,7 @@ namespace Computer_Shop.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(Account account)
+        public ActionResult Login(Account account,Employee employee)
         {
             try
             {
@@ -87,16 +91,25 @@ namespace Computer_Shop.Controllers
                     {
                         Session["uname"] = user.UserName;
                         Session["uid"] = user.UserID;
-                        Session["email"] = user.Email;
-                        Session["ngaysinh"] = user.NgaySinh;
-                        Session["mobile"] = user.Mobile;
                         if (user.Role == 1)
                         {
                             Session["role"] = "admin";
                         }
-                        else
+                        else if (user.Role == 2)
                         {
-                            Session["role"] = "user";
+                            Session["role"] = "Storage Manager";
+                        }
+                        else if (user.Role == 3)
+                        {
+                            Session["role"] = "Salesman";
+                        }
+                        else if (user.Role == 4)
+                        {
+                            Session["role"] = "Accounting";
+                        }
+                        else if (user.Role == 5)
+                        {
+                            Session["role"] = "Customer";
                         }
                         return RedirectToAction("Index", "Home");
                     }
@@ -125,9 +138,9 @@ namespace Computer_Shop.Controllers
             if (ModelState.IsValid)
             {
                 var check = db.Accounts.FirstOrDefault(u => u.UserName.Equals(account.UserName));
-                if (check == null && Session["role"] == null)
+                if (check == null)
                 {
-                    Session["role"] = "user";
+                    account.Role = account.Role;
                     account.Password = account.Password;
                     db.Configuration.ValidateOnSaveEnabled = false;
                     db.Accounts.Add(account);
@@ -141,6 +154,25 @@ namespace Computer_Shop.Controllers
                 }
 
 
+            }
+            return View();
+        }
+
+        public ActionResult AddCustomer()
+        {
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult AddCustomer(Customer customer)
+        {
+            if (ModelState.IsValid)
+            {
+                    customer.Role = 5;
+                    db.Configuration.ValidateOnSaveEnabled = false;
+                    db.Customers.Add(customer);
+                    db.SaveChanges();
+                    return RedirectToAction("Customer","Home");
             }
             return View();
         }
@@ -163,7 +195,7 @@ namespace Computer_Shop.Controllers
             {
                 return RedirectToAction("Index","Home");
             }
-            else if(Session["uname"] != null && Session["role"] != "admin")
+            else if(Session["uname"] != null && Session["role"] != "admin" && Session["role"] != "Storage Manager")
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -260,5 +292,397 @@ namespace Computer_Shop.Controllers
             db.SaveChanges();
             return RedirectToAction("Shop","Home");
         }
+
+
+        /*===========================================================================*/
+        /*======================= USER FUNCTION =======================================*/
+        /*===========================================================================*/
+
+            /*======================= Admin FUNCTION =======================================*/
+        public ActionResult Admin()
+        {
+            if (Session["uname"] == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            var list = db.Employees.ToList<Employee>();
+            return View(list);
+        }
+
+        public ActionResult Employee()
+        {
+            if (Session["uname"] == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            var list = db.Accounts.ToList<Account>();
+            return View(list);
+        }
+
+        public ActionResult Customer()
+        {
+            if (Session["uname"] == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            var list = db.Customers.ToList<Customer>();
+            return View(list);
+        }
+
+        public ActionResult StorageManager()
+        {
+            if (Session["uname"] == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            var list = db.Employees.ToList<Employee>();
+            return View(list);
+        }
+
+        public ActionResult Accounting()
+        {
+            if (Session["uname"] == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            var list = db.Employees.ToList<Employee>();
+            return View(list);
+        }
+
+        public ActionResult Salesman()
+        {
+            if (Session["uname"] == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            var list = db.Employees.ToList<Employee>();
+            return View(list);
+        }
+        public ActionResult User()
+        {
+            if (Session["uname"] == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            var list = db.Accounts.ToList<Account>();
+            return View(list);
+        }
+
+        public ActionResult DeleteUser(int UserID)
+        {
+            var data = db.Accounts.SingleOrDefault(a => a.UserID.Equals(UserID));
+            /*  Single() : Returns the only element from a collection, 
+            or the only element that satisfies a condition.*/
+
+            db.Accounts.Remove(data);
+            /* DeleteOnSubmit() : Dung de xoa cac doi tuong co trong students
+             * Khi su dung phai co SubmitChanges() de cap nhat lai du lieu tren SQL Server
+             */
+            db.SaveChanges();
+
+            return RedirectToAction("User");
+            /* Xoa xong load lai danh sach bang hm Redirect, ung voi Index Action*/
+        }
+
+        public ActionResult DeleteCustomer(int cID)
+        {
+            var data = db.Customers.SingleOrDefault(a => a.Customer_ID.Equals(cID));
+            /*  Single() : Returns the only element from a collection, 
+            or the only element that satisfies a condition.*/
+
+            db.Customers.Remove(data);
+            /* DeleteOnSubmit() : Dung de xoa cac doi tuong co trong students
+             * Khi su dung phai co SubmitChanges() de cap nhat lai du lieu tren SQL Server
+             */
+            db.SaveChanges();
+
+            return RedirectToAction("Customer");
+            /* Xoa xong load lai danh sach bang hm Redirect, ung voi Index Action*/
+        }
+
+        public ActionResult Account(int id)
+        {
+            if (Session["uname"] == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            var user = db.Accounts.SingleOrDefault(u => u.UserID.Equals(id));
+            return View(user);
+        }
+
+        public ActionResult ViewAccount(int id)
+        {
+            if (Session["uname"] == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            var user = db.AccountEmployees.SingleOrDefault(u => u.UserID.Equals(id));
+            return View(user);
+        }
+
+        [HttpPost, ActionName("ViewAccount")]
+        public ActionResult ViewAccount(string UserName, string NewUserName, string Fullname, string NewFullname, string Email, string NewEmail, DateTime DoB, DateTime NewDoB, string Mobile, string NewMob, string City, string NewCiTy, decimal Salary, decimal NewSalary)
+        {
+            var id = Int32.Parse(Session["uid"].ToString());
+            var employe = db.AccountEmployees.SingleOrDefault(u => u.UserID.Equals(id));
+            if (employe != null)
+            {
+                if (NewUserName != UserName)
+                {
+                    employe.UserName = NewUserName;
+                    db.SaveChanges();
+                }
+                if (NewFullname != Fullname)
+                {
+                    employe.FullName = NewFullname;
+                    db.SaveChanges();
+                }
+                if (NewEmail != Email)
+                {
+                    employe.Email = NewEmail;
+                    db.SaveChanges();
+                }
+                if (NewDoB != DoB)
+                {
+                    employe.DoB = NewDoB;
+                    db.SaveChanges();
+                }
+                if (NewMob != Mobile)
+                {
+                    employe.Mobile = NewMob;
+                    db.SaveChanges();
+                }
+                if (NewCiTy != City)
+                {
+                    employe.City = NewCiTy;
+                    db.SaveChanges();
+                }
+                if (NewSalary != Salary)
+                {
+                    employe.Salary = NewSalary;
+                    db.SaveChanges();
+                }
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult ViewEmployee(int Eid)  /*View Employee Information*/
+        {
+            if (Session["uname"] == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            var employee = db.Employees.SingleOrDefault(u => u.EmployeeID.Equals(Eid));
+            Session["Eid"] = employee.EmployeeID;
+            return View(employee);
+        }
+
+        [HttpPost, ActionName("ViewEmployee")]
+        public ActionResult ViewEmployee(string Fullname, string NewFullname, string Email, string NewEmail, DateTime DoB, DateTime NewDoB, string Mobile, string NewMob, string City, string NewCiTy, decimal Salary, decimal NewSalary)
+        {
+            //================= Get UID to collect user inform ==================================
+            var eid = Int32.Parse(Session["Eid"].ToString());
+            var employe = db.Employees.SingleOrDefault(u => u.EmployeeID.Equals(eid));
+            if (employe != null)
+            {
+                if (NewFullname != Fullname)
+                {
+                    employe.FullName = NewFullname;
+                    db.SaveChanges();
+                }
+                if (NewEmail != Email)
+                {
+                    employe.Email = NewEmail;
+                    db.SaveChanges();
+                }
+                if (NewDoB != DoB)
+                {
+                    employe.DoB = NewDoB;
+                    db.SaveChanges();
+                }
+                if (NewMob != Mobile)
+                {
+                    employe.Mobile = NewMob;
+                    db.SaveChanges();
+                }
+                if (NewCiTy != City)
+                {
+                    employe.City = NewCiTy;
+                    db.SaveChanges();
+                }
+                if (NewSalary != Salary)
+                {
+                    employe.Salary = NewSalary;
+                    db.SaveChanges();
+                }
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult ViewCustomer(int cID)
+        {
+            if (Session["uname"] == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            var customer = db.Customers.SingleOrDefault(u => u.Customer_ID.Equals(cID));
+            Session["cID"] = customer.Customer_ID;
+            return View(customer);
+        }
+
+        [HttpPost,ActionName("ViewCustomer")]
+        public ActionResult ViewCustomer(string Fullname, string NewFullname, string Phonenumber, string NewPhonenumber, string Email, string NewEmail, string Address, string NewAddress)
+        {
+            var cid = Int32.Parse(Session["cID"].ToString());
+            var customer = db.Customers.SingleOrDefault(cus => cus.Customer_ID.Equals(cid));
+            if (NewFullname != Fullname)
+            {
+                customer.Fullname = NewFullname;
+                db.SaveChanges();
+                return RedirectToAction("Customer", "Home");
+            }
+            if (NewPhonenumber != Phonenumber)
+            {
+                customer.Phonenumber = NewPhonenumber;
+                db.SaveChanges();
+                return RedirectToAction("Customer", "Home");
+            }
+            if (NewEmail != Email)
+            {
+                customer.Email = NewEmail;
+                db.SaveChanges();
+                return RedirectToAction("Customer", "Home");
+            }
+            if (NewAddress != Address)
+            {
+                customer.Address = NewAddress;
+                db.SaveChanges();
+                return RedirectToAction("Customer", "Home");
+            }
+
+            db.SaveChanges();
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult Password()
+        {
+            if (Session["uname"] == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Password(string CurrentPass, string NewPass, string RenewPass)
+        {
+            var uid = Int32.Parse(Session["uid"].ToString());
+            var user = db.Accounts.SingleOrDefault(u => u.UserID.Equals(uid));
+            if (user != null)
+            {
+                if (user.Password.Equals(CurrentPass))
+                {
+                    if (NewPass.Equals(RenewPass))
+                    {
+                        user.Password = NewPass;
+                        db.SaveChanges();
+                    }
+                    else
+                    {
+                        return RedirectToAction("Password", "Home");
+                    }
+                    return RedirectToAction("Index", "My_Account");
+                }
+                return RedirectToAction("Password", "Home");
+            }
+            return View();
+        }
+
+        
+
+        /*===========================================================================*/
+        /*======================= ORDER FUNCTION =======================================*/
+        /*===========================================================================*/
+
+        public ActionResult Order()
+        {
+            if (Session["uname"] == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            List<OriginalOrder> list = db.OriginalOrders.ToList();
+            return View(list);
+        }
+
+        public ActionResult DetailsOrder()
+        {
+            if (Session["uname"] == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            List<Order> list = db.Orders.ToList();
+            return View(list);
+        }
+
+        public ActionResult AddDetailsOrder()
+        {
+            if (Session["uname"] == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddDetailsOrder(Order oid)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Orders.Add(oid);
+                db.SaveChanges();
+                return RedirectToAction("Order");
+            }
+            return RedirectToAction("Order", "Home");
+        }
+
+        public ActionResult AddOrder()
+        {
+            if (Session["uname"] == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddOrder(OriginalOrder oid)
+        {
+            if (ModelState.IsValid)
+            {
+                db.OriginalOrders.Add(oid);
+                db.SaveChanges();
+                return RedirectToAction("Order");
+            }
+            return RedirectToAction("Order","Home");
+        }
+
+        //public ActionResult EditOrder(int oid)
+        //{
+        //    if (Session["uname"] == null)
+        //    {
+        //        return RedirectToAction("Login", "Home");
+        //    }
+        //    var order = db.Orders.SingleOrDefault(u => u.UserID.Equals(oid));
+        //    return View(order);
+        //}
+
+        public ActionResult DeleteOrder(int oid)
+        {
+            var data = db.OriginalOrders.SingleOrDefault(a => a.Order_ID.Equals(oid));
+            db.OriginalOrders.Remove(data);
+            db.SaveChanges();
+            return RedirectToAction("Order");
+        }
     }
+
 }

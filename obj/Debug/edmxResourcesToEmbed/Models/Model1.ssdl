@@ -5,13 +5,62 @@
       <PropertyRef Name="UserID" />
     </Key>
     <Property Name="UserID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="UserName" Type="nvarchar" MaxLength="50" />
-    <Property Name="Password" Type="nvarchar" MaxLength="50" />
-    <Property Name="Email" Type="varchar" MaxLength="50" />
-    <Property Name="NgaySinh" Type="date" />
-    <Property Name="Mobile" Type="nvarchar" MaxLength="50" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Role" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="Customer_ID" />
+    </Key>
+    <Property Name="Customer_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Fullname" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Phonenumber" Type="varchar" MaxLength="24" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="BirthDay" Type="date" Nullable="false" />
+    <Property Name="Address" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Role" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="EmployeeID" />
+    </Key>
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="FullName" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="DoB" Type="datetime" Nullable="false" />
+    <Property Name="Mobile" Type="varchar" MaxLength="12" Nullable="false" />
+    <Property Name="City" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Salary" Type="money" Nullable="false" />
+    <Property Name="EmployeeID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Role" Type="int" />
-    <Property Name="City" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="Order">
+    <Key>
+      <PropertyRef Name="OrderID" />
+      <PropertyRef Name="ProductID" />
+    </Key>
+    <Property Name="OrderID" Type="int" Nullable="false" />
+    <Property Name="Shipping_Address" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Payment_Method" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Date" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Price" Type="float" Nullable="false" />
+    <Property Name="Status" Type="varchar" MaxLength="10" Nullable="false" />
+    <Property Name="Product Name" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="ProductID" Type="int" Nullable="false" />
+    <Property Name="Quantity" Type="int" />
+  </EntityType>
+  <EntityType Name="OriginalOrder">
+    <Key>
+      <PropertyRef Name="Order_ID" />
+    </Key>
+    <Property Name="Order_ID" Type="int" Nullable="false" />
+    <Property Name="Create_Date" Type="datetime" Nullable="false" />
+    <Property Name="UserName" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="CustomerID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Customer_Name" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="Status" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="Products">
     <Key>
@@ -39,18 +88,49 @@
     <Property Name="Date" Type="datetime" />
   </EntityType>
   <!--Errors Found During Generation:
-warning 6002: The table/view 'Computer_Management_System.dbo.UserReport' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-  <EntityType Name="UserReport">
+warning 6002: The table/view 'Computer_Management_System.dbo.AccountCustomerEmployeeOrder' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="AccountCustomerEmployeeOrder">
     <Key>
       <PropertyRef Name="UserID" />
-      <PropertyRef Name="ReportID" />
+      <PropertyRef Name="Customer_ID" />
+      <PropertyRef Name="FullName" />
+      <PropertyRef Name="Order_ID" />
+      <PropertyRef Name="Create_Date" />
+      <PropertyRef Name="Expr1" />
     </Key>
     <Property Name="UserID" Type="int" Nullable="false" />
-    <Property Name="UserName" Type="nvarchar" MaxLength="50" />
-    <Property Name="Email" Type="varchar" MaxLength="50" />
-    <Property Name="Date" Type="datetime" />
-    <Property Name="Description" Type="nvarchar" MaxLength="100" />
-    <Property Name="ReportID" Type="int" Nullable="false" />
+    <Property Name="Customer_ID" Type="int" Nullable="false" />
+    <Property Name="FullName" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="Order_ID" Type="int" Nullable="false" />
+    <Property Name="Create_Date" Type="datetime" Nullable="false" />
+    <Property Name="Expr1" Type="nvarchar" MaxLength="100" Nullable="false" />
+    <Property Name="Status" Type="varchar" MaxLength="50" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'Computer_Management_System.dbo.AccountEmployee' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="AccountEmployee">
+    <Key>
+      <PropertyRef Name="UserID" />
+      <PropertyRef Name="FullName" />
+      <PropertyRef Name="Email" />
+      <PropertyRef Name="DoB" />
+      <PropertyRef Name="Mobile" />
+      <PropertyRef Name="City" />
+      <PropertyRef Name="Salary" />
+      <PropertyRef Name="EmployeeID" />
+      <PropertyRef Name="Role" />
+      <PropertyRef Name="UserName" />
+    </Key>
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="FullName" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="Email" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="DoB" Type="datetime" Nullable="false" />
+    <Property Name="Mobile" Type="varchar" MaxLength="12" Nullable="false" />
+    <Property Name="City" Type="varchar" MaxLength="100" Nullable="false" />
+    <Property Name="Salary" Type="money" Nullable="false" />
+    <Property Name="EmployeeID" Type="int" Nullable="false" />
+    <Property Name="Role" Type="int" Nullable="false" />
+    <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
   </EntityType>
   <Association Name="FK_User_Report_Account">
     <End Role="Account" Type="Self.Account" Multiplicity="0..1" />
@@ -66,17 +146,36 @@ warning 6002: The table/view 'Computer_Management_System.dbo.UserReport' does no
   </Association>
   <EntityContainer Name="Computer_Management_SystemModelStoreContainer">
     <EntitySet Name="Account" EntityType="Self.Account" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="OriginalOrder" EntityType="Self.OriginalOrder" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="User_Report" EntityType="Self.User_Report" Schema="dbo" store:Type="Tables" />
-    <EntitySet Name="UserReport" EntityType="Self.UserReport" store:Type="Views" store:Schema="dbo">
+    <EntitySet Name="AccountCustomerEmployeeOrder" EntityType="Self.AccountCustomerEmployeeOrder" store:Type="Views" store:Schema="dbo">
       <DefiningQuery>SELECT 
-    [UserReport].[UserID] AS [UserID], 
-    [UserReport].[UserName] AS [UserName], 
-    [UserReport].[Email] AS [Email], 
-    [UserReport].[Date] AS [Date], 
-    [UserReport].[Description] AS [Description], 
-    [UserReport].[ReportID] AS [ReportID]
-    FROM [dbo].[UserReport] AS [UserReport]</DefiningQuery>
+    [AccountCustomerEmployeeOrder].[UserID] AS [UserID], 
+    [AccountCustomerEmployeeOrder].[Customer_ID] AS [Customer_ID], 
+    [AccountCustomerEmployeeOrder].[FullName] AS [FullName], 
+    [AccountCustomerEmployeeOrder].[Order_ID] AS [Order_ID], 
+    [AccountCustomerEmployeeOrder].[Create_Date] AS [Create_Date], 
+    [AccountCustomerEmployeeOrder].[Expr1] AS [Expr1], 
+    [AccountCustomerEmployeeOrder].[Status] AS [Status]
+    FROM [dbo].[AccountCustomerEmployeeOrder] AS [AccountCustomerEmployeeOrder]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="AccountEmployee" EntityType="Self.AccountEmployee" store:Type="Views" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [AccountEmployee].[UserID] AS [UserID], 
+    [AccountEmployee].[FullName] AS [FullName], 
+    [AccountEmployee].[Email] AS [Email], 
+    [AccountEmployee].[DoB] AS [DoB], 
+    [AccountEmployee].[Mobile] AS [Mobile], 
+    [AccountEmployee].[City] AS [City], 
+    [AccountEmployee].[Salary] AS [Salary], 
+    [AccountEmployee].[EmployeeID] AS [EmployeeID], 
+    [AccountEmployee].[Role] AS [Role], 
+    [AccountEmployee].[UserName] AS [UserName]
+    FROM [dbo].[AccountEmployee] AS [AccountEmployee]</DefiningQuery>
     </EntitySet>
     <AssociationSet Name="FK_User_Report_Account" Association="Self.FK_User_Report_Account">
       <End Role="Account" EntitySet="Account" />

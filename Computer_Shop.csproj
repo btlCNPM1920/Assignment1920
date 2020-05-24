@@ -135,6 +135,18 @@
     <Compile Include="Models\Account.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\AccountCustomerEmployeeOrder.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\AccountEmployee.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Customer.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Employee.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -150,10 +162,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\Product.cs">
+    <Compile Include="Models\Order.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\UserReport.cs">
+    <Compile Include="Models\OriginalOrder.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Product.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User_Report.cs">
@@ -335,9 +350,27 @@
     <Content Include="Views\Home\Wishlist.cshtml" />
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\Register.cshtml" />
-    <Content Include="Views\Home\AddProduct.cshtml" />
     <Content Include="Views\Home\Product.cshtml" />
     <Content Include="Views\Home\EditProduct.cshtml" />
+    <Content Include="Views\Home\User.cshtml" />
+    <Content Include="Views\Home\Account.cshtml" />
+    <Content Include="Views\Home\Password.cshtml" />
+    <Content Include="Views\Home\Order.cshtml" />
+    <Content Include="Views\Home\AddOrder.cshtml" />
+    <Content Include="Views\Home\Admin.cshtml" />
+    <Content Include="Views\Home\Employee.cshtml" />
+    <Content Include="Views\Home\AddProduct.cshtml" />
+    <Content Include="Views\Home\StorageManager.cshtml" />
+    <Content Include="Views\Home\Accounting.cshtml" />
+    <Content Include="Views\Home\Salesman.cshtml" />
+    <Content Include="Views\Home\AddCustomer.cshtml" />
+    <Content Include="Views\Home\Customer.cshtml" />
+    <Content Include="Views\Home\ViewEmployee.cshtml" />
+    <Content Include="Views\Home\EditSalary.cshtml" />
+    <Content Include="Views\Home\ViewCustomer.cshtml" />
+    <Content Include="Views\Home\ViewAccount.cshtml" />
+    <Content Include="Views\Home\DetailsOrder.cshtml" />
+    <Content Include="Views\Home\AddDetailsOrder.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
