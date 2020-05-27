@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Computer_Shop.Models.Account>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<table border="5" cellpadding="10" cellspacing="5" align="center">
+
+    <tr style="font-size:200%;text-align:center;font-family:'Times New Roman'">
+        <br>
+        <td>UserID</td>
+        <td>UserName</td>
+        <td>Role ID</td>
+        <td>Role</td>
+        </br>
+    </tr>
+
+    @{
+        foreach (Computer_Shop.Models.Account x in Model)
+        {
+            <tr style="font-size:24px" class="tr">
+                <td>@x.UserID</td>
+                <td>@x.UserName</td>
+                <td>@x.Role</td>
+                @if(x.Role.Equals(2))
+                {
+                    <td style="font-size:24px;color:orange">Storage Manager</td>
+                }
+                else if(x.Role.Equals(3))
+                {
+                    <td style="font-size:24px;color:dodgerblue">Salesman</td>
+                }
+                else if (x.Role.Equals(4))
+                {
+                    <td style="font-size:24px;color:mediumpurple">Accountant</td>
+                }
+                else if (x.Role.Equals(1))
+                {
+                    <td style="font-size:24px;color:red">Administrator</td>
+                }
+
+            </tr>
+        }
+    }
+</table>
+
+<br />
+<br />

@@ -1,4 +1,4 @@
-﻿@model Computer_Shop.Models.Account
+﻿@model Computer_Shop.Models.Employee
 @{
     ViewBag.Title = "Register";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -31,48 +31,37 @@
         <h4 style="font-size:50px;text-align:center;font-family:'Times New Roman'">Account Register</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.UserName, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-4">
-                <input class="form-control text-box single-line" id="UserName" name="UserName" type="text" value="">
-                @Html.ValidationMessageFor(model => model.UserName, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-4">
-                <input class="form-control text-box single-line" id="Password" name="Password" type="password" value="">
-                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-4">
-                <input class="form-control text-box single-line" id="Role" name="Role" type="Role" value="">
-                @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="row" style="padding-left:15px;font-size:24px;text-align:center">
-            <div class="col-md-4">
-                2 : Storage Manager
-            </div>
-            <div class="col-md-4">
-                3 : Salesman
-            </div>
-            <div class="col-md-4">
-                4 : Accounting
-            </div>
-            <div class="col-md-4">
-                5 : Accounting
-            </div>
-        </div>
 
         <div style="padding-bottom:20px"></div>
+        <div class="col-md-8" style="font-size:26px;color:red;border-top:2px solid red">
+            Add an account to an Employee
+        </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.FullName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <strong class="control-label col-md-2" style="font-size:32px">
+                User ID*
+            </strong>
+            <div class="col-md-4">
+                <input class="form-control text-box single-line" id="UserID" name="UserID" type="text" value="Input the User account ID">
+                @Html.ValidationMessageFor(model => model.UserID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div>
+            @ViewBag.Message
+        </div>
+        <div class="col-md-8" style="font-size:26px;color:red;border-bottom:2px solid red">
+            Admin should View the user ID first in the "View User" to see the New Account User ID
+        </div>
+
+        <hr />
+
+        <div class="col-md-8" style="font-size:32px;color:black;border-top:2px solid black">
+            Below is Employee Information
+        </div>
+
+        <div class="form-group">
+            <strong class="control-label col-md-2" style="font-size:32px">
+                Full Name
+            </strong>
             <div class="col-md-4">
                 <input class="form-control text-box single-line" id="FullName" name="FullName" type="FullName" value="">
                 @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
@@ -80,7 +69,9 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Email, htmlAttributes: new { @class = "control-label col-md-2" })
+            <strong class="control-label col-md-2" style="font-size:32px">
+                Email
+            </strong>
             <div class="col-md-4">
                 <input class="form-control text-box single-line" id="Email" name="Email" type="text" value="">
                 @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
@@ -88,15 +79,19 @@
         </div>
 
         <div class="form-group">
-            <div class="control-label col-md-2">Date of Birth</div>
+            <strong class="control-label col-md-2" style="font-size:32px">
+                Date of Birth
+            </strong>
             <div class="col-md-4">
-                <input class="form-control text-box single-line" data-val="true" data-val-date="The field NgaySinh must be a date." id="NgaySinh" name="NgaySinh" type="datetime" value="">
-                @Html.ValidationMessageFor(model => model.NgaySinh, "", new { @class = "text-danger" })
+                <input class="form-control text-box single-line" data-val="true" data-val-date="The field NgaySinh must be a date." id="DoB" name="DoB" type="datetime" value="">
+                @Html.ValidationMessageFor(model => model.DoB, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Mobile, htmlAttributes: new { @class = "control-label col-md-2" })
+            <strong class="control-label col-md-2" style="font-size:32px">
+                Mobile
+            </strong>
             <div class="col-md-4">
                 <input class="form-control text-box single-line" id="Mobile" name="Mobile" type="text" value="">
                 @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
@@ -104,7 +99,9 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-2" })
+            <strong class="control-label col-md-2" style="font-size:32px">
+                Address
+            </strong>
             <div class="col-md-4">
                 <input class="form-control text-box single-line" id="City" name="City" type="text" value="">
                 @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
@@ -113,15 +110,18 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Sign up" class="btn btn-default" />
+                <input type="submit" value="Create" class="hvr-hover1" style="font-size:24px;border:2px solid black;background-color:black;color:white;border-radius:8px" />
             </div>
         </div>
     </div>
     }
 
-    <div>
-        @Html.ActionLink("Back to List", "Index")
-    </div>
+<div class="col-md-4">
+    <a class="hvr-hover1" href="/Home/AccountList" style="font-size:32px;border:2px solid black;background-color:black;color:white;border-radius:8px">
+        Back to View Order
+    </a>
+</div>
+    <br />
 </body>
 </html>
 

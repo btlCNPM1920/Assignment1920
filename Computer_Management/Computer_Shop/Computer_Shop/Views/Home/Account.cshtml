@@ -4,13 +4,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<style>
-    .col-md-12
-    {
-        text-align:center
-    }
-
-</style>
 
 @using (Html.BeginForm("Account", "Home", FormMethod.Post))
 {
@@ -55,7 +48,7 @@
                 <input class="hvr-hover" type="button" id="sf_submit" value="Change password">
             </a>
             <a href="/Home/ViewAccount?id=@Session["uid"]">
-                <input class="hvr-hover" type="button" id="sf_submit" value="View Information">
+                <input class="hvr-hover" type="button" id="sf_submit" value="View Information & Edit">
             </a>
         </div>
     </div>

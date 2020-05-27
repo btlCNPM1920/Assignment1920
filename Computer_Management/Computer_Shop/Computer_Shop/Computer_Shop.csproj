@@ -372,6 +372,8 @@
     <Content Include="Views\Home\DetailsOrder.cshtml" />
     <Content Include="Views\Home\AddDetailsOrder.cshtml" />
     <Content Include="Views\Home\EditOrder.cshtml" />
+    <Content Include="Views\Home\AddAccount.cshtml" />
+    <Content Include="Views\Home\AccountList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

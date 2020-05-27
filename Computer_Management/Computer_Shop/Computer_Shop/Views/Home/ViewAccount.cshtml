@@ -1,14 +1,9 @@
-﻿@model Computer_Shop.Models.AccountEmployee
+﻿@model Computer_Shop.Models.Employee
 @{
     ViewBag.Title = "ViewAccount";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<style>
-    .col-md-12 {
-        text-align: center
-    }
-</style>
 
 @using (Html.BeginForm("ViewAccount", "Home", FormMethod.Post))
 {
@@ -26,21 +21,6 @@
             @Html.ValidationMessageFor(model => model.UserID, "", new { @class = "text-danger" })
         </div>
     </strong>
-    <br />
-    @*================= Change Username =============================*@
-    <strong style="font-size:35px">
-        <div class="form-group col-md-4">
-            Current Username :
-            <input class="form-control text-box single-line" id="UserName" name="UserName" type="text" value="@Html.ValueFor(m=>m.UserName)" readonly
-                   style="background-color:forestgreen;color:white;text-align:center;font-size:24px">
-        </div>
-
-        <div class="form-group col-md-4">
-            *New Username :
-            <input class="form-control text-box single-line" id="NewUserName" name="NewUserName" type="text" value="@Html.ValueFor(m=>m.UserName)">
-        </div>
-    </strong>
-
     <br />
 
     @*================= Change Fullname =============================*@
@@ -98,43 +78,34 @@
 
         <div class="form-group col-md-4">
             *New Mobile :
-            <input class="form-control text-box single-line" id="NewMobile" name="NewMobile" type="text" value="@Html.ValueFor(m=>m.Mobile)">
+            <input class="form-control text-box single-line" id="NewMob" name="NewMob" type="text" value="@Html.ValueFor(m=>m.Mobile)">
         </div>
     </strong>
     <br />
 
-    @*================= Change City =============================*@
+    @*================= Change Address =============================*@
     <strong style="font-size:35px">
         <div class="form-group col-md-4">
-            Current City :
+            Current Address :
             <input class="form-control text-box single-line" id="City" name="City" type="text" value="@Html.ValueFor(m=>m.City)" readonly
                    style="background-color:forestgreen;color:white;text-align:center;font-size:24px">
         </div>
 
         <div class="form-group col-md-4">
-            *New City :
+            *New Address :
             <input class="form-control text-box single-line" id="NewCity" name="NewCity" type="text" value="@Html.ValueFor(m=>m.City)">
         </div>
     </strong>
     <br />
 
 
-
-    <strong class="form-group" style="font-size:35px">
-        @Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-4" style="font-size:36px;font-family:'Times New Roman'">
-            <input class="form-control text-box single-line" id="Role" name="Role" type="text" value="@Session["role"]" readonly style="font-size:24px">
-            @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
-        </div>
-    </strong>
-
     <br />
     <div class="form-group">
         <div class="col-md-4" style="font-size:20px;font-family:'Times New Roman'">
-            <a href="/Home/Index">
+            <a href="/Home/Account?id=@Session["uid"]">
                 <input class="hvr-hover" type="button" id="sf_submit" value="Back">
             </a>
-            <input type="submit" value="Save" class="btn btn-default" />
+            <input type="submit" value="Save" class="btn btn-default"/>
         </div>
     </div>
 

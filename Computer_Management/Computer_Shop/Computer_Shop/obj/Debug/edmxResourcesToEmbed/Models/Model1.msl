@@ -112,13 +112,13 @@
     <EntitySetMapping Name="DetailsOrderProductsOrders">
       <EntityTypeMapping TypeName="Computer_Management_SystemModel.DetailsOrderProductsOrder">
         <MappingFragment StoreEntitySet="DetailsOrderProductsOrder">
-          <ScalarProperty Name="Image1" ColumnName="Image1" />
           <ScalarProperty Name="DetailsOrderID" ColumnName="DetailsOrderID" />
           <ScalarProperty Name="Product_ID" ColumnName="Product ID" />
           <ScalarProperty Name="Quantity" ColumnName="Quantity" />
           <ScalarProperty Name="Product_Name" ColumnName="Product Name" />
           <ScalarProperty Name="Price" ColumnName="Price" />
           <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+          <ScalarProperty Name="Image1" ColumnName="Image1" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

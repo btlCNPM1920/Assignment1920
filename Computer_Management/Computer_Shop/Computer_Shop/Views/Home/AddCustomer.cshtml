@@ -31,10 +31,10 @@
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
             <div class="form-group">
-                @Html.LabelFor(model => model.Fullname, htmlAttributes: new { @class = "control-label col-md-2" })
+                @Html.LabelFor(model => model.Customer_Name, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-4">
-                    <input class="form-control text-box single-line" id="Fullname" name="Fullname" type="text" value="">
-                    @Html.ValidationMessageFor(model => model.Fullname, "", new { @class = "text-danger" })
+                    <input class="form-control text-box single-line" id="Customer_Name" name="Customer_Name" type="text" value="">
+                    @Html.ValidationMessageFor(model => model.Customer_Name, "", new { @class = "text-danger" })
                 </div>
             </div>
 

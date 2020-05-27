@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.Drawing;
 using System.IO;
@@ -80,7 +81,7 @@ namespace Computer_Shop.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(Account account,Employee employee)
+        public ActionResult Login(Account account)
         {
             try
             {
@@ -126,34 +127,70 @@ namespace Computer_Shop.Controllers
             return View();
         }
 
-        /*== CREATE ACCOUNT ==*/
+        public ActionResult AccountList()
+        {
+            if (Session["uname"] == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            var list = db.Accounts.ToList();
+            return View(list);
+        }
+
+        //[HttpPost]
+        //public ActionResult AccountList()
+        //{
+        //    if (Session["uname"] == null)
+        //    {
+        //        return RedirectToAction("Login", "Home");
+        //    }
+        //    var list = db.Accounts.ToList();
+        //    return View(list);
+        //}
+
+        /*== ADD ACCOUNT #1 ==*/
+        public ActionResult AddAccount()
+        {
+            if (Session["uname"] == null)
+            {
+                return RedirectToAction("Login", "Home");
+            }
+            return View();
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult AddAccount(Account account)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Accounts.Add(account);
+                db.SaveChanges();
+                return RedirectToAction("Employee", "Home");
+            }
+            return View();
+        }
+
+        /*== ADD EMPLOYEE #2 ==*/
         public ActionResult Register()
         {
             return View();
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult Register(Account account)
+        public ActionResult Register(Employee employee)
         {
             if (ModelState.IsValid)
             {
-                var check = db.Accounts.FirstOrDefault(u => u.UserName.Equals(account.UserName));
-                if (check == null)
+                if(db.Employees.Any(m => m.UserID == employee.UserID))
                 {
-                    account.Role = account.Role;
-                    account.Password = account.Password;
-                    db.Configuration.ValidateOnSaveEnabled = false;
-                    db.Accounts.Add(account);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
+                    ViewBag.Message = "UserID for Employee already Exits !";
                 }
                 else
                 {
-                    ViewBag.error = "Username already exists";
-                    return View();
+                    db.Employees.Add(employee);
+                    db.SaveChanges();
+                    return RedirectToAction("Employee", "Home");
                 }
-
-
             }
             return View();
         }
@@ -168,7 +205,6 @@ namespace Computer_Shop.Controllers
         {
             if (ModelState.IsValid)
             {
-                    db.Configuration.ValidateOnSaveEnabled = false;
                     db.Customers.Add(customer);
                     db.SaveChanges();
                     return RedirectToAction("Customer","Home");
@@ -415,22 +451,17 @@ namespace Computer_Shop.Controllers
             {
                 return RedirectToAction("Login", "Home");
             }
-            var user = db.AccountEmployees.SingleOrDefault(u => u.UserID.Equals(id));
+            var user = db.Employees.SingleOrDefault(u => u.UserID.Equals(id));
             return View(user);
         }
 
         [HttpPost, ActionName("ViewAccount")]
-        public ActionResult ViewAccount(string UserName, string NewUserName, string Fullname, string NewFullname, string Email, string NewEmail, DateTime DoB, DateTime NewDoB, string Mobile, string NewMob, string City, string NewCiTy, decimal Salary, decimal NewSalary)
+        public ActionResult ViewAccount(string Fullname, string NewFullname, string Email, string NewEmail, DateTime DoB, DateTime NewDoB, string Mobile, string NewMob, string City, string NewCity)
         {
             var id = Int32.Parse(Session["uid"].ToString());
-            var employe = db.AccountEmployees.SingleOrDefault(u => u.UserID.Equals(id));
+            var employe = db.Employees.SingleOrDefault(u => u.UserID.Equals(id));
             if (employe != null)
             {
-                if (NewUserName != UserName)
-                {
-                    employe.UserName = NewUserName;
-                    db.SaveChanges();
-                }
                 if (NewFullname != Fullname)
                 {
                     employe.FullName = NewFullname;
@@ -451,18 +482,13 @@ namespace Computer_Shop.Controllers
                     employe.Mobile = NewMob;
                     db.SaveChanges();
                 }
-                if (NewCiTy != City)
+                if (NewCity != City)
                 {
-                    employe.City = NewCiTy;
-                    db.SaveChanges();
-                }
-                if (NewSalary != Salary)
-                {
-                    employe.Salary = NewSalary;
+                    employe.City = NewCity;
                     db.SaveChanges();
                 }
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("My_Account", "Home");
         }
 
         public ActionResult ViewEmployee(int Eid)  /*View Employee Information*/
@@ -572,7 +598,7 @@ namespace Computer_Shop.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost,ActionName("Password")]
         public ActionResult Password(string CurrentPass, string NewPass, string RenewPass)
         {
             var uid = Int32.Parse(Session["uid"].ToString());
@@ -585,14 +611,9 @@ namespace Computer_Shop.Controllers
                     {
                         user.Password = NewPass;
                         db.SaveChanges();
+                        ViewBag.Message = "Password Change Successfully !";
                     }
-                    else
-                    {
-                        return RedirectToAction("Password", "Home");
-                    }
-                    return RedirectToAction("Index", "My_Account");
                 }
-                return RedirectToAction("Password", "Home");
             }
             return View();
         }
